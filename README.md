@@ -1,7 +1,7 @@
 # DropSeg
 The official fine-tuning implementation of our VOS approach (DropSeg) for the **CVPR 2023** paper [_DropMAE: Masked Autoencoders with Spatial-Attention Dropout for Tracking Tasks_](https://arxiv.org/pdf/2304.00571.pdf).
 <p align="left">
-  <img src="https://github.com/jimmy-dq/DropTrack/blob/main/qualitative_vis/qualitative_vot_v2.png" width="960">
+  <img src="https://github.com/jimmy-dq/DropSeg/blob/main/figs/qualitative.png" width="960">
 </p>
 
 
@@ -46,8 +46,8 @@ python -m torch.distributed.launch --master_port 9842 --nproc_per_node=8 train_d
 ```
 `--pretrained_net_path` indicates your downloaded pre-trained model path. 
 
-### Evaluation command
-Download the DropSeg model here, and run the evaluation w/ the following commands. All evaluations are done in the 480p resolution.
+### Inference command
+Download the [DropSeg](https://drive.google.com/file/d/167aMTSQrgX3NFimRAnY5LjB7apRuSP8P/view?usp=sharing) model here, and run the evaluation w/ the following commands. All evaluations are done in the 480p resolution.
 ```
 Python submit_eval_davis17.py --davis_path path_to_davis17_dataset
 ```
