@@ -1,114 +1,58 @@
-# DropTrack
-The official fine-tuning implementation of DropTrack for the **CVPR 2023** paper [_DropMAE: Masked Autoencoders with Spatial-Attention Dropout for Tracking Tasks_](https://arxiv.org/pdf/2304.00571.pdf).
+# DropSeg
+The official fine-tuning implementation of our VOS approach (DropSeg) for the **CVPR 2023** paper [_DropMAE: Masked Autoencoders with Spatial-Attention Dropout for Tracking Tasks_](https://arxiv.org/pdf/2304.00571.pdf).
 
 
 ## :sunny: Highlights
 
-#### * Thanks for the great [_OSTrack_](https://github.com/botaoye/OSTrack) library, which helps us to quickly implement the [_DropMAE_](https://github.com/jimmy-dq/DropMAE) VOT fine-tuning. The repository mainly follows the OSTrack repository.
+#### * Thanks for the great [_STCN_](https://github.com/hkchengrex/STCN) library, which helps us to quickly implement the [_DropMAE_](https://github.com/jimmy-dq/DropMAE) VOS fine-tuning. The repository mainly follows the STCN repository.
 
-#### * The OSTrack w/ our [_DropMAE_](https://github.com/jimmy-dq/DropMAE) pre-trained models can achieve state-of-the-art performance on existing popular tracking benchmarks.
-
-| Tracker     | GOT-10K (AO) | LaSOT (AUC) | LaSOT (AUC) | TrackingNet (AUC) | TNL2K(AUC) |
-|:-----------:|:------------:|:-----------:|:-----------:|:-----------------:|:-----------:|
-| DropTrack-K700-ViTBase | 75.9         | 71.8        | 52.7        | 84.1              | 56.9        |
-
-
-### :star2: Training Speed
-Our DropTrack has the same training procedure and nearly the same model parameters (i.e., except for using two frame identity embeddings) w/ OSTrack, so the training speed is consistent w/ OSTrack. We use 4 A100 GPUs w/ a total batch size of 128, which costs about ~6 hours (100 Epochs) for training on GOT-10k.
+#### * The proposed DropSeg uses pairs of frames for offline VOS training, and achieves SOTA results on existing VOS benchmarks w/ one-shot evaluation.
 
 ## Install the environment
-**Option1**: The Anaconda is used to create the Python environment, which mainly follows the installation in OSTrack. The specific installation packages are listed in requirements.txt for consideration, which can be installed in the following way:
-```
-conda create -n droptrack python=3.8
-conda activate droptrack
-pip install -r requirements.txt
-```
-
-## Set project paths
-Run the following command to set paths for this project
-```
-python tracking/create_default_local_file.py --workspace_dir . --data_dir ./data --save_dir ./output
-```
-After running this command, you can also modify paths by editing these two files
-```
-lib/train/admin/local.py  # paths about training
-lib/test/evaluation/local.py  # paths about testing
-```
-
-
-
-
-## Data Preparation
-Put the tracking datasets in ./data. It should look like:
-   ```
-   ${PROJECT_ROOT}
-    -- data
-        -- lasot
-            |-- airplane
-            |-- basketball
-            |-- bear
-            ...
-        -- got10k
-            |-- test
-            |-- train
-            |-- val
-        -- coco
-            |-- annotations
-            |-- images
-        -- trackingnet
-            |-- TRAIN_0
-            |-- TRAIN_1
-            ...
-            |-- TRAIN_11
-            |-- TEST
-   ```
-
+The Anaconda is used to create the Python environment, which mainly follows the installation in [_DropMAE_](https://github.com/jimmy-dq/DropMAE) and partially in [_STCN_](https://github.com/hkchengrex/STCN). The detailed installation packages can be found in `environment.yaml`.
 
 ## Training
-* Download pre-trained DropMAE models in [_DropMAE_](https://github.com/jimmy-dq/DropMAE) and put it under `$PROJECT_ROOT$/pretrained_models`. 
-* Modify the ```PRETRAIN_FILE``` tag in ```vitb_384_mae_ce_32x4_ep300.yaml``` or ```vitb_384_mae_ce_32x4_got10k_ep100.yaml``` to the name of your downloaded DropMAE pre-trained models. 
-* Training Command on GOT-10K:
-```
-cd path_to_your_project
-python tracking/train.py --script ostrack --config vitb_384_mae_ce_32x4_got10k_ep100 --save_dir sabe_path --mode multiple --nproc_per_node 4 --use_lmdb 0 --use_wandb 0
-```
-* Training Command on the other tracking datasets:
-```
-cd path_to_your_project
-python tracking/train.py --script ostrack --config vitb_384_mae_ce_32x4_ep300 --save_dir save_path --mode multiple --nproc_per_node 4 --use_lmdb 0 --use_wandb 0
-```
 
-
-
-## Evaluation
-Download the tracking model weights
-<table><tbody>
-<!-- START TABLE -->
-<!-- TABLE HEADER -->
-<th valign="bottom"></th>
-<th valign="bottom">K400-1600E-GOT10k</th>
-<th valign="bottom">K700-800E-GOT10k</th>
-<th valign="bottom">K700-800E-AllData</th>
-<!-- TABLE BODY -->
-<tr><td align="left">Tracking Models</td>
-<td align="center"><a href="https://drive.google.com/file/d/1AHNr7dJ1B53CR8WigV26amEoFJLTtu7v/view?usp=sharing">download</a></td>
-<td align="center"><a href="https://drive.google.com/file/d/1OMYfyvkpxf7DVS7wYLUGmXPydS9TkskT/view?usp=sharing">download</a></td>
-<td align="center"><a href="https://drive.google.com/file/d/1l0YSK0QLPGVIGiNXwlaWp5uhIkJawJqh/view?usp=sharing">download</a></td>
-</tbody></table>
-
-Change the corresponding values of `lib/test/evaluation/local.py` to the actual benchmark saving paths. Note that the ```save_dir``` tag should be set to the downloaded tracking model path and you can also modify the tracking model name in ```lib/test/parameter/ostrack.py```.
-
-Some testing examples:
-- LaSOT or other off-line evaluated benchmarks (modify `--dataset` correspondingly)
+### Data preparation
+We follow the same data preparation steps used in [_STCN_](https://github.com/hkchengrex/STCN). Download both DAVIS and YouTube-19 datasets:
+```bash
+├── DAVIS
+│   ├── 2016
+│   │   ├── Annotations
+│   │   └── ...
+│   └── 2017
+│       ├── test-dev
+│       │   ├── Annotations
+│       │   └── ...
+│       └── trainval
+│           ├── Annotations
+│           └── ...
+├── YouTube
+│   ├── all_frames
+│   │   └── valid_all_frames
+│   ├── train
+│   ├── train_480p
+│   └── valid
 ```
-python tracking/test.py ostrack vitb_384_mae_ce_32x4_ep300 --dataset lasot --threads 16 --num_gpus 4
-python tracking/analysis_results.py # need to modify tracker configs and names
+### Pre-trained model download
+Download pre-trained DropMAE models in [_DropMAE_](https://github.com/jimmy-dq/DropMAE) (e.g., K700-800E).
+
+### Training command
 ```
-- GOT10K-test
+python -m torch.distributed.launch --master_port 9842 --nproc_per_node=8 train_dropseg.py --pretrained_net_path pretrained_model_path --id retrain_s03 --stage 3
 ```
-python tracking/test.py ostrack vitb_384_mae_ce_32x4_got10k_ep100 --dataset got10k_test --threads 16 --num_gpus 4
-python lib/test/utils/transform_got10k.py --tracker_name ostrack --cfg_name vitb_384_mae_ce_32x4_got10k_ep100
+`--pretrained_net_path` indicates your downloaded pre-trained model path. 
+
+### Evaluation command
+Download the DropSeg model here, and run the evaluation w/ the following commands. All evaluations are done in the 480p resolution.
 ```
+Python submit_eval_davis17.py --davis_path path_to_davis17_dataset
+```
+```
+Python submit_eval_davis16.py --davis_path path_to_davis16_dataset
+```
+After running the above evaluation, you could get the qualitative results saved in the root project directory. You could use the offline evaluation toolikit (https://github.com/davisvideochallenge/davis2017-evaluation) to get the validation performance on DAVIS-16/17. For `test-dev` on DAVIS-17, using the online evaluation server instead.
+
 
 
 ## Acknowledgments
