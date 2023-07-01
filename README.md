@@ -1,5 +1,8 @@
 # DropSeg
 The official fine-tuning implementation of our VOS approach (DropSeg) for the **CVPR 2023** paper [_DropMAE: Masked Autoencoders with Spatial-Attention Dropout for Tracking Tasks_](https://arxiv.org/pdf/2304.00571.pdf).
+<p align="left">
+  <img src="https://github.com/jimmy-dq/DropTrack/blob/main/qualitative_vis/qualitative_vot_v2.png" width="960">
+</p>
 
 
 ## :sunny: Highlights
@@ -56,7 +59,7 @@ After running the above evaluation, you could get the qualitative results saved 
 
 
 ## Acknowledgments
-* Thanks for the [OSTrack](https://github.com/botaoye/OSTrack) library for convenient implementation.
+* Thanks for the [_STCN_](https://github.com/hkchengrex/STCN) library for convenient implementation.
 
 
 ## Citation
