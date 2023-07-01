@@ -1,0 +1,16 @@
+{
+    "Token":"aPDHhnYCjGr0Vs4zRn-jvQ",
+    "business_flag": "TEG_AILab_CVC_chongqing",
+    "task_flag": "exp-stcn-ft-evaluation-v3",
+    "start_cmd": "sh ./start_test-v3.sh",
+    "GPUName": "V100",
+    "is_elasticity": false,
+    "keep_alive": true,
+    "exec_start_in_all_mpi_pods": true,
+    "model_local_file_path": "/apdcephfs/private_qiangqwu/Projects/STCN_ft/submission_test",
+    "host_num": 1,
+    "host_gpu_num": 1,
+    "image_full_name": "mirrors.tencent.com/star_library/g-tlinux2.2-python3.6-cuda11.0-cudnn8.1:latest"
+}
+
+
