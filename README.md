@@ -1,23 +1,15 @@
-# DropTrack
-The official fine-tuning implementation of DropTrack for the **CVPR 2023** paper [_DropMAE: Masked Autoencoders with Spatial-Attention Dropout for Tracking Tasks_](https://arxiv.org/pdf/2304.00571.pdf).
+# DropSeg
+The official fine-tuning implementation of our VOS approach (DropSeg) for the **CVPR 2023** paper [_DropMAE: Masked Autoencoders with Spatial-Attention Dropout for Tracking Tasks_](https://arxiv.org/pdf/2304.00571.pdf).
 
 
 ## :sunny: Highlights
 
-#### * Thanks for the great [_OSTrack_](https://github.com/botaoye/OSTrack) library, which helps us to quickly implement the [_DropMAE_](https://github.com/jimmy-dq/DropMAE) VOT fine-tuning. The repository mainly follows the OSTrack repository.
+#### * Thanks for STCN (https://github.com/hkchengrex/STCN) library, which helps us to quickly implement the [_DropMAE_](https://github.com/jimmy-dq/DropMAE) VOS fine-tuning. The repository mainly follows the STCN repository.
 
-#### * The OSTrack w/ our [_DropMAE_](https://github.com/jimmy-dq/DropMAE) pre-trained models can achieve state-of-the-art performance on existing popular tracking benchmarks.
-
-| Tracker     | GOT-10K (AO) | LaSOT (AUC) | LaSOT (AUC) | TrackingNet (AUC) | TNL2K(AUC) |
-|:-----------:|:------------:|:-----------:|:-----------:|:-----------------:|:-----------:|
-| DropTrack-K700-ViTBase | 75.9         | 71.8        | 52.7        | 84.1              | 56.9        |
-
-
-### :star2: Training Speed
-Our DropTrack has the same training procedure and nearly the same model parameters (i.e., except for using two frame identity embeddings) w/ OSTrack, so the training speed is consistent w/ OSTrack. We use 4 A100 GPUs w/ a total batch size of 128, which costs about ~6 hours (100 Epochs) for training on GOT-10k.
+#### * The proposed DropSeg uses pairs of frames for offline VOS training, and achieves SOTA results on existing VOS benchmarks w/ one-shot evaluation.
 
 ## Install the environment
-**Option1**: The Anaconda is used to create the Python environment, which mainly follows the installation in OSTrack. The specific installation packages are listed in requirements.txt for consideration, which can be installed in the following way:
+**Option1**: The Anaconda is used to create the Python environment, which mainly follows the installation in [_DropMAE_](https://github.com/jimmy-dq/DropMAE) and partially in STCN (https://github.com/hkchengrex/STCN). The detailed installation packages are listed in :
 ```
 conda create -n droptrack python=3.8
 conda activate droptrack
